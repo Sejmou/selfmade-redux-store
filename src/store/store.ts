@@ -3,7 +3,7 @@ interface Action {
     payload?: any
 }
 
-interface State {
+export interface State {
     [key: string]: any
 }
 
@@ -31,9 +31,21 @@ export class Store {
         return this.state;
     }
 
+    subscribe(fn: Function) {
+        this.subscribers = [...this.subscribers, fn];
+        this.notify();
+        //return function allowing subscribers to unsubscribe again
+        return () => this.subscribers = this.subscribers.filter(s => s !== fn);
+    }
+
+    private notify() {
+        this.subscribers.forEach(fn => fn(this.value));
+    }
+
     dispatch(action: Action) {
         //TODO: use reducer to actually handle action appropriately!
         this.state = this.reduce(this.state, action);
+        this.notify();
     }
 
     private reduce(state: State, action: Action): State {

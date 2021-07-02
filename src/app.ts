@@ -1,4 +1,5 @@
 import * as fromStore from './store';//import everything from store folder at once
+import { State } from './store';
 
 import { renderTodos } from './utils';
 
@@ -14,8 +15,6 @@ const reducers = {
 
 const store = new fromStore.Store({}, reducers);
 
-console.log(store.value);
-
 button.addEventListener(
   'click',
   () => {
@@ -28,12 +27,16 @@ button.addEventListener(
       payload
     });
 
-    console.log(store.value);
-
     input.value = '';
   },
   false
 );
+
+const unsubscribe = store.subscribe((state: State) => {
+  renderTodos(state.todos.data);
+});
+
+destroy.addEventListener('click', unsubscribe);
 
 input.addEventListener('keydown', (e) => {if (e.key == 'Enter') button.click();});
 
@@ -43,3 +46,6 @@ todoList.addEventListener('click', function(event) {
     console.log(target);
   }
 });
+
+
+store.subscribe((state: State) => console.log('STATE:', state));
