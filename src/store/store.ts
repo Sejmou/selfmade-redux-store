@@ -20,4 +20,13 @@ export class Store {
     get value() {
         return this.state;
     }
+
+    dispatch(action: { type: string, payload: any }) {
+        //TODO: use reducer to actually handle action appropriately!
+        this.state = {
+            ...this.state,
+            todos: [...this.state.todos, action.payload]
+        };
+        console.log(this.state);
+    }
 }
