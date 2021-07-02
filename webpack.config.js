@@ -7,7 +7,8 @@ module.exports = {
   devServer: {
     port: 5500,
   },
-  devtool: 'inline-source-map',
+  mode: 'development',
+  devtool: 'inline-source-map',//code line numbers are wrong for some reason
   resolve: {
     extensions: ['.ts', '.js'],
   },
