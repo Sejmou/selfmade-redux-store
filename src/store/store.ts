@@ -1,9 +1,18 @@
+interface Action {
+    type?: string,
+    payload?: any
+}
+
+interface State {
+    [key: string]: any
+}
+
 /**
  * manages subscribers, application state, and reducers.
  */
 export class Store {
     private subscribers: Function[] = [];
-    private state: { [key: string]: any };
+    private state: State;
 
     /**
      * 
@@ -11,7 +20,8 @@ export class Store {
      * @param reducers ?
      */
     constructor(initalState = {}, private reducers: { [key: string]: Function } = {}) {
-        this.state = initalState;
+        //let reducers override initial state (why?!)
+        this.state = this.reduce(initalState, {});
     }
 
     /**
@@ -21,12 +31,17 @@ export class Store {
         return this.state;
     }
 
-    dispatch(action: { type: string, payload: any }) {
+    dispatch(action: Action) {
         //TODO: use reducer to actually handle action appropriately!
-        this.state = {
-            ...this.state,
-            todos: [...this.state.todos, action.payload]
-        };
-        console.log(this.state);
+        this.state = this.reduce(this.state, action);
+    }
+
+    private reduce(state: State, action: Action): State {
+        const newState: State = {};
+        for (const prop in this.reducers) {
+            //pass only part of state that the reducer is allowed to manage
+            newState[prop] = this.reducers[prop](state[prop], action);
+        }
+        return newState;
     }
 }

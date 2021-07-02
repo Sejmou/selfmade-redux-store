@@ -7,11 +7,12 @@ const button = document.querySelector('button') as HTMLButtonElement;
 const destroy = document.querySelector('.unsubscribe') as HTMLButtonElement;
 const todoList = document.querySelector('.todos') as HTMLLIElement;
 
-const store = new fromStore.Store({
-  todos: [
-    { label: 'Eat pizza', complete: false }
-  ]
-});
+//only 1 reducer is responsible for changes of each part of the state?
+const reducers = {
+  todos: fromStore.reducer
+};
+
+const store = new fromStore.Store({}, reducers);
 
 console.log(store.value);
 
@@ -27,10 +28,14 @@ button.addEventListener(
       payload
     });
 
+    console.log(store.value);
+
     input.value = '';
   },
   false
 );
+
+input.addEventListener('keydown', (e) => {if (e.key == 'Enter') button.click();});
 
 todoList.addEventListener('click', function(event) {
   const target = event.target as HTMLButtonElement;
