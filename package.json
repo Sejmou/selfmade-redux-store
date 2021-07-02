@@ -1,0 +1,21 @@
+{
+  "name": "todd-motto-selfmade-redux-store",
+  "version": "1.0.0",
+  "description": "learning things about redux stores by implementing one myself",
+  "main": "app.js",
+  "dependencies": {
+    "ts-loader": "^9.2.3",
+    "typescript": "^4.3.5",
+    "webpack": "^5.42.0"
+  },
+  "devDependencies": {
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack serve --mode=development"
+  },
+  "author": "",
+  "license": "ISC"
+}
